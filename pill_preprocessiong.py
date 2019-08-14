@@ -364,36 +364,41 @@ if __name__ == "__main__":
 
     #파일 읽어오기
     cur_path = os.getcwd()
-    """
-    폴더 읽어오기
+
+    #폴더 읽어오기
     path= os.path.join(cur_path,"pill_image")
     imagepaths_list = [os.path.join(path, file_name) for file_name in os.listdir(path)]
     print(imagepaths_list)
     for i in imagepaths_list :
         image = cv2.imread(i)
-    """
+
     print(cur_path)
-    image = cv2.imread("test2.png")
+    #image = cv2.imread("test2.png")
     #cv2.imshow("original", image)
 
     #step1 실행
+    print("step1 start")
     step1 = step1_getpillarea(image)
     cv2.imshow("step1", step1)
 
     #step2 실행
+    print("step2 start")
     step2 = step2_del_shadow(step1)
     cv2.imshow("step2", step2)
     #step2_1 = contour_result = step2_1_do_contour(step2)
     #cv2.imshow("step2-1", step2_1)
 
     #step3 실행
+    print("step3 start")
     mask,step3 = step3_extractpill(step2)
     cv2.imshow("step3", step3)
 
     #step4 실행
+    print("step4 start")
     #step4_matchshape(mask)
 
     #step5 실행
+    print("step5 start")
     """
     현재 오류
     step4 = step3
