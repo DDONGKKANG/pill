@@ -361,7 +361,7 @@ def step5_5_contours(img,src, what):
     return result_img
 
 if __name__ == "__main__":
-
+    print('I am Duck')
     #파일 읽어오기
     cur_path = os.getcwd()
     """
