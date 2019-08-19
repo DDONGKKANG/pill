@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../pill/.idea/pill-backup.iml" filepath="$PROJECT_DIR$/../pill/.idea/pill-backup.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/pill_detection.iml" filepath="$PROJECT_DIR$/.idea/pill_detection.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../testcat/.idea/testcat.iml" filepath="$PROJECT_DIR$/../testcat/.idea/testcat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pill.iml" filepath="$PROJECT_DIR$/.idea/pill.iml" />
     </modules>
   </component>
 </project>
