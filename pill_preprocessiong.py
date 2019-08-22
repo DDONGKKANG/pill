@@ -432,7 +432,7 @@ if __name__ == "__main__":
 
         # step4 실행
         print("step4 start")
-        step4_matchshape(step3)
+        step4_matchshape(mask)
         step4 = step3
 
         # step5 실행
@@ -448,7 +448,7 @@ if __name__ == "__main__":
         if check == 2:
             print("done!")
             outpath = os.path.join(cur_path, "step5")
-            cv2.imwrite(os.path.join(outpath, str(a) + ".jpg"), step5)
+            cv2.imwrite(os.path.join(outpath, str(num) + ".jpg"), step5)
 
         num = num + 1
 
