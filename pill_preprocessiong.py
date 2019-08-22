@@ -3,6 +3,17 @@ import cv2
 import numpy as np
 import math
 import os
+import mahotas
+
+class ZernikeMoments:
+    def __init__(self, radius):
+        # store the size of the radius that will be
+        # used when computing moments
+        self.radius = radius
+
+    def describe(self, image):
+        # return the Zernike moments for the image
+        return mahotas.features.zernike_moments(image, self.radius)
 
 def step1_getpillarea(image) :
     """
@@ -163,41 +174,66 @@ def step3_extractpill(img):
 
     return mask, masked
 
+def mean_squared_error(y, t):
+    return ((y-t)**2).mean(axis=None)
+
 def step4_matchshape(img):
-    min = 1.0
-    imgfile_list = ['drug_shape/hexagon.png',
-                    'drug_shape/oval_curve.png',
-                    'drug_shape/oval_rect.png',
-                    'drug_shape/pentagon.png',
-                    'drug_shape/round.png',
-                    'drug_shape/square.png',
-                    'drug_shape/triangle.png',
-                    'drug_shape/u-shaped.png']
+    desc = ZernikeMoments(21)
+    index = {}
 
-    wins = map(lambda x: 'img' + str(x+1), range(8))
-    wins = list(wins)
-    imgs = []
+    # =============== drug_shape(6가지) 이미지파일 Zernike moment
+    drug_list = [
+        'drug_shape/oval_curve.png',
+        'drug_shape/oval_rect.png',
+        'drug_shape/pentagon.png',
+        'drug_shape/round.png',
+        'drug_shape/square.png',
+        'drug_shape/capsule.png'
+    ]
+    drug_imgs = []
     contour_list = []
-
     i = 0
-    for imgfile in imgfile_list:
-        img = cv2.imread(imgfile, cv2.IMREAD_GRAYSCALE)
-        imgs.append(img)
 
-        ret, thr = cv2.threshold(img, 127, 255, 0)
-        contours, _ = cv2.findContours(thr, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        contour_list.append(contours[0])
+    for drug_img in drug_list:
+
+        sample = cv2.imread(drug_img)
+        #drug_imgs.append(sample)
+
+        gray = cv2.cvtColor(sample, cv2.COLOR_BGR2GRAY)
+        index[i] = desc.describe(gray)
         i += 1
 
-    for i in range(8):
-        ret = cv2.matchShapes(mask, contour_list[i], 1, 0.0)
-        if ( min > ret ) :
-            min = ret
-            minval = i
+    '''
+    for i in range(0, 6):
+        print(drug_list[i])
+        for j in range(25):
+            print(index[i][j])
+        print('--------------------')
+    '''
 
-        print(ret)
+    # =============== img파일 Zernike moment
 
-    print("min" + str(min))
+    # gray
+    #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Zernike moment
+    moments = desc.describe(img)
+
+
+    '''
+    print('=========================================')
+    for i in range(0, 25):
+        print(moments[i])
+    '''
+
+    S = []
+    for i in range(len(index)):
+        S.append(mean_squared_error(np.array(moments), np.array(index[i])))
+
+    print(S)
+    #print("np.min(S) :", str(np.min(S)))
+    print("np.argmin(S) :", str(np.argmin(S)))
+    print("min :", str(drug_list[np.argmin(S)]))
 
 def step5_1_grayscale(img):
     """
@@ -370,9 +406,11 @@ if __name__ == "__main__":
     path= os.path.join(cur_path,"pill_image") #pill_image = 약 이미지 폴더
     imagepaths_list = [os.path.join(path, file_name) for file_name in os.listdir(path)]
     #print(imagepaths_list)
-    a = 1
+
+
+    num = 1
     for i in imagepaths_list :
-        print(a)
+        print(num)
         image = cv2.imread(i)
 
         # step1 실행
@@ -389,11 +427,12 @@ if __name__ == "__main__":
         print("step3 start")
         mask, step3 = step3_extractpill(step2)
         outpath = os.path.join(cur_path,"step3")
-        cv2.imwrite(os.path.join(outpath,str(a)+".jpg"), step3)
+        cv2.imwrite(os.path.join(outpath,str(num)+".jpg"), step3)
         #cv2.imshow("step3", step3)
 
         # step4 실행
         print("step4 start")
+        step4_matchshape(step3)
         step4 = step3
 
         # step5 실행
@@ -411,7 +450,7 @@ if __name__ == "__main__":
             outpath = os.path.join(cur_path, "step5")
             cv2.imwrite(os.path.join(outpath, str(a) + ".jpg"), step5)
 
-        a = a + 1
+        num = num + 1
 
     cv2.waitKey(0)
 
