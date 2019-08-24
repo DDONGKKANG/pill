@@ -23,11 +23,10 @@ def step1_getpillarea(image) :
     """
     #원본 이미지 사진 크기 재조정
     imageHeight, imageWidth = image.shape[:2]
-    resizeHeight = int(1 * imageHeight)
-    resizeWidth = int(1 * imageWidth)
-    #if (imageHeight > 700): resizeHeight = 700
-    #if (imageWidth > 700): resizeWidth = 700
-    #resizeImage = cv2.resize(image, (resizeHeight, resizeWidth), interpolation=cv2.INTER_CUBIC)  # Resize image 보간법 이용
+    resizeHeight = int(0.1 * imageHeight)
+    resizeWidth = int(0.1 * imageWidth)
+    #resizeImage = cv2.resize(image, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)  # Resize image 보간법 이용
+    #resizeHeight, resizeWidth = image.shape[:2]
     resizeImage = image
 
     # initialize OpenCV's static fine grained saliency detector and
@@ -36,13 +35,11 @@ def step1_getpillarea(image) :
     (success, saliencyMap) = saliency.computeSaliency(resizeImage)
     saliencyMap = (saliencyMap * 255).astype("uint8")  # 0-1사이의 값을 0-255의 값으로 변환
 
-    #cv2.imshow("saliency Map",cv2.resize(saliencyMap, (500, 700), interpolation=cv2.INTER_CUBIC))
     # if we would like a *binary* map that we could process for contours,
     # compute convex hull's, extract bounding boxes, etc., we can
     # additionally threshold the saliency map
     threshMap = cv2.threshold(saliencyMap.astype("uint8"), 0, 255,
                               cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-
 
     # 이진화 이미지의 윤곽선을 검색
     # cv2.findContours(이진화 이미지, 검색 방법, 근사화 방법) return 윤곽선, 계층 구조
@@ -51,7 +48,6 @@ def step1_getpillarea(image) :
     area, output = 0, contours[0]
     #가장 큰 윤곽선 색
     for cnt in contours:
-        cv2.drawContours(threshMap, cnt, 0, (0, 0, 255), 2)
         if (area < cv2.contourArea(cnt)):
             area = cv2.contourArea(cnt)
             output = cnt
@@ -73,7 +69,6 @@ def step1_getpillarea(image) :
 
     #사진 자르기
     dst = resizeImage[ry:y + h + 100,rx:x + w + 100]  # NOTE: its img[y: y + h, x: x + w] and *not* img[x: x + w, y: y + h]]
-
     return dst
 
 def step2_del_shadow(img):
@@ -92,47 +87,39 @@ def step2_del_shadow(img):
     sum1 = 0
     sum2 = 0
 
-    for i in range(height):
-        for j in range(width):
-            tmp_v[i][j] = v[i][j] / 255
-            # max 1, min 0
+    tmp_v = v / 255
+    # max 1, min 0
 
-            if(tmp_v[i][j] < 0.3):
-                B3[i][j] = 1
-                notB3[i][j] = 0
-            else:
-                B3[i][j] = 0
-                notB3[i][j] = 1
+    B3 = tmp_v < 0.3
+    notB3 = tmp_v >= 0.3
+    B5 = (0.3 <= tmp_v) == (tmp_v <= 0.7)
 
-            if(0.3 <= tmp_v[i][j] <= 0.7):
-                B5[i][j] = 1
-            else:
-                B5[i][j] = 0
-
-            sum1 += notB3[i][j] * tmp_v[i][j]
-            sum2 += notB3[i][j]
-
+    sum1 = sum(sum(notB3*tmp_v))
+    sum2 = sum(sum(notB3))
 
     # Calculate m3 _ modify
     m3 = sum1 / sum2
     # Calculate Bw
-    Bw = B3 + 0.7*B5
+    Bw = B3 + 0.7 * B5
 
     # Gaussian Filter
-    dim1 = 2*4*2 + 1
-    dim2 = 2*4*20 + 1
+    dim1 = 2*4*2 + 1; dim2 = 2*4*20 + 1
 
     Gv = cv2.GaussianBlur(tmp_v,(dim1, dim1),2) # V에 Gaussian Filter
     Gw = cv2.GaussianBlur(Bw,(dim2, dim2),20) # Bw에 Gaussian Filter
 
     result_v = np.zeros((height,width))
+    result_v = tmp_v + (m3 - Gv) * Gw
+
     for x in range(height):
         for y in range(width):
-            result_v[x][y] = tmp_v[x][y] + (m3 - Gv[x][y]) * Gw[x][y]
             result_hsv[x][y][2] = result_v[x][y] * 255
+            # must modify *************
+
     result = cv2.cvtColor(result_hsv, cv2.COLOR_HSV2BGR)
 
     return result
+
 
 def step3_extractpill(img):
     # gray -> adaptive Threshold
@@ -429,12 +416,13 @@ if __name__ == "__main__":
         outpath = os.path.join(cur_path,"step3")
         cv2.imwrite(os.path.join(outpath,str(num)+".jpg"), step3)
         #cv2.imshow("step3", step3)
-
+        """
         # step4 실행
         print("step4 start")
         step4_matchshape(mask)
         step4 = step3
-
+        
+        
         # step5 실행
         print("step5 start")
         tmp = step4
@@ -449,7 +437,7 @@ if __name__ == "__main__":
             print("done!")
             outpath = os.path.join(cur_path, "step5")
             cv2.imwrite(os.path.join(outpath, str(num) + ".jpg"), step5)
-
+        """
         num = num + 1
 
     cv2.waitKey(0)
