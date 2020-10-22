@@ -150,6 +150,225 @@ class Preprocessiong :
 
         cv2.imwrite("step3.jpg", masked)
         return mask, masked
+    
+
+    def mean_squared_error(y, t):
+        return ((y-t)**2).mean(axis=None)
+
+    def step4_matchshape(img):
+        desc = ZernikeMoments(21)
+        index = {}
+
+        # =============== drug_shape(6가지) 이미지파일 Zernike moment
+        drug_list = [
+            'drug_shape/oval_curve.png',
+            'drug_shape/oval_rect.png',
+            'drug_shape/pentagon.png',
+            'drug_shape/round.png',
+            'drug_shape/square.png',
+            'drug_shape/capsule.png'
+        ]
+        drug_imgs = []
+        contour_list = []
+        i = 0
+
+        for drug_img in drug_list:
+
+            sample = cv2.imread(drug_img)
+            #drug_imgs.append(sample)
+
+            gray = cv2.cvtColor(sample, cv2.COLOR_BGR2GRAY)
+            index[i] = desc.describe(gray)
+            i += 1
+
+        '''
+        for i in range(0, 6):
+            print(drug_list[i])
+            for j in range(25):
+                print(index[i][j])
+            print('--------------------')
+        '''
+
+        # =============== img파일 Zernike moment
+
+        # gray
+        #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+        # Zernike moment
+        moments = desc.describe(img)
+
+
+        '''
+        print('=========================================')
+        for i in range(0, 25):
+            print(moments[i])
+        '''
+
+        S = []
+        for i in range(len(index)):
+            S.append(mean_squared_error(np.array(moments), np.array(index[i])))
+
+        print(S)
+        #print("np.min(S) :", str(np.min(S)))
+        print("np.argmin(S) :", str(np.argmin(S)))
+        print("min :", str(drug_list[np.argmin(S)]))
+
+    def step5_1_grayscale(img):
+        """
+        step5_1-이미지 회색처리
+        새로운 폴더에 저장했다가 불러올 때 회색으로 불러옴.
+        :param img:
+        :return:
+        """
+        path = os.getcwd()
+        cv2.imwrite(os.path.join(path, 'step4.jpg'), img)
+        img = cv2.imread(os.path.join(path, 'step4.jpg'), cv2.IMREAD_GRAYSCALE)
+        return img
+
+    def step5_2_intensity(img):
+        """
+        step5_2-밝기 조절
+        :param img:
+        :return:
+        """
+        for i in range(0, img.shape[0]):
+            for j in range(0, img.shape[1]):
+                #print(i,j,img[i,j])
+                if img[i, j] > 225:
+                    img[i, j] = 235
+                    continue
+                elif img[i, j] > 200:
+                    img[i, j] += 10
+                    continue
+                elif img[i, j] > 150:
+                    img[i, j] += 11
+                    continue
+                elif img[i, j] > 100:
+                    img[i, j] += 20
+                    continue
+                elif img[i, j] > 50:
+                    img[i, j] += 30
+                    continue
+                elif img[i, j] < 20:
+                    img[i, j] = 0
+                    continue
+                img[i, j] += 50
+        return img
+
+    def step5_3_magnitude (img):
+        """
+        step5_3-Gaussian Filter
+        :param img:
+        :return:
+        """
+        img = cv2.GaussianBlur(img, (15, 15), 0)
+        sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=5)
+        sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=5)
+        dxabs = cv2.convertScaleAbs(sobelx)
+        dyabs = cv2.convertScaleAbs(sobely)
+        img = cv2.addWeighted(dxabs, 0.7, dyabs, 0.7, 0)
+        return img
+
+    def step5_4_otsu(img):
+        """
+        step5_4-블러처리 후 이진화
+        :param img:
+        :return:
+        """
+        blur = cv2.GaussianBlur(img, (11, 11), 0)
+        ret, img = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        return img
+
+    def step5_5_imshow_components(img):
+        """
+        step5_5-테스트용 라벨링
+        step5_5는 사실 확인용임 실제 이미지에 적용되면 안됨.
+        :param img:
+        :return:
+        """
+        # image connected component
+        ret, labels = cv2.connectedComponents(img)
+
+        # Map component labels to hue val
+        label_hue = np.uint8(179*labels/np.max(labels))
+        blank_ch = 255*np.ones_like(label_hue)
+        labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
+
+        # cvt to BGR for display
+        labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
+
+        # set bg label to black
+        labeled_img[label_hue==0] = 0
+
+        return labeled_img
+
+    def step5_6_contours(img,src):
+        """
+        step5_6-Bounding Box추출
+        적절한 contours를 찾아서 Bounding Box 그리기
+        :param img:
+        :param src:
+        :return:
+        """
+        c, h = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        a1 = 0
+        a2 = 0
+        a3 = 0
+        a4 = 0
+        a5 = 0
+
+        for i in range(len(c)):
+            cnt = c[i]
+            # Aspect Ratio < 3
+            if (1.0 * cnt.shape[1] / cnt.shape[0]) < 3:
+                a1 += 1
+            else:
+                continue
+
+            # 100 < Area < 20000
+            area = cv2.contourArea(cnt)
+            if 100 < area < 20000:
+                a2 += 1
+            else:
+                continue
+
+            # Eccentricity < 0.995
+            (fx, fy), (MA, ma), angle = cv2.fitEllipse(cnt)
+            fa = ma / 2
+            fb = MA / 2
+            eccentricity = math.sqrt(pow(fa, 2) - pow(fb, 2))
+            eccentricity = round(eccentricity / fa, 2)
+
+            if eccentricity < 0.995:
+                a3 += 1
+            else:
+                continue
+
+            # Solidity > 0.3
+            hull = cv2.convexHull(cnt)
+            hull_area = cv2.contourArea(hull)
+            solidity = float(area) / hull_area
+            if solidity > 0.3:
+                a4 += 1
+            else:
+                continue
+
+            # 0.2 < Extent< 0.9
+            x, y, w, h = cv2.boundingRect(cnt)
+            rect_area = w * h
+            extent = float(area) / rect_area
+
+            if 0.2 < extent < 0.9:
+                a5 += 1
+            else:
+                continue
+
+            rect = cv2.minAreaRect(cnt)
+            box = cv2.boxPoints(rect)
+            box = np.int0(box)
+            result_img = cv2.drawContours(src, [box], 0, (0, 0, 255), 2)
+
+        return result_img, a5
 
     def run(self):
         print("\n`")
