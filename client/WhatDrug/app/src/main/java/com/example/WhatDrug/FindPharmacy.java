@@ -225,7 +225,7 @@ public class FindPharmacy extends AppCompatActivity
 
         new NRPlaces.Builder()
                 .listener(FindPharmacy.this)
-                .key("AIzaSyA3cBjoXXaGG5xTQLRXGwO9FOFQny2ASFc")
+                .key("null")
                 .latlng(location.latitude, location.longitude)//현재 위치
                 .radius(500) //500 미터 내에서 검색
                 .type(PlaceType.PHARMACY) //약국
