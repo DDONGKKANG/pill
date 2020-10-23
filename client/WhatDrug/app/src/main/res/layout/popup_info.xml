@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#eeeeee"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/pharmacy_name"
+            android:text="name error"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="#F78EA2"
+            android:layout_width="match_parent"
+            android:layout_height="53sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#EDABB8"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="19dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/pharmacy_location"
+            android:text="location error"
+            android:textSize="19sp"
+            android:textColor="#000"
+            android:gravity="center"
+            android:layout_marginBottom="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/pharmacy_call"
+            android:textSize="19sp"
+            android:textColor="#000"
+            android:text="call error"
+            android:gravity="center"
+            android:layout_marginBottom="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:background="#EDABB8"/>
+
+    <Button
+        android:id="@+id/okBtn"
+        android:text="확인"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#eeeeee"
+        android:onClick="mOk" />
+</LinearLayout>

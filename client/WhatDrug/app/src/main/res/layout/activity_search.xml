@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffffff"
+    android:id="@+id/ry_main"
+    tools:context="com.example.WhatDrug.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pill_identifier"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
+
+        <EditText
+            android:id="@+id/et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:hint="약이름 또는 성분명 입력"/>
+
+        <ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search"
+            android:layout_gravity="right|center_vertical"
+            android:background="#ffffffff"/>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

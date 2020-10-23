@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffffff"
+    tools:context="com.example.WhatDrug.MainActivity">
+
+    <TextView
+        android:id="@+id/pill_identifier"
+        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/main_str"
+        android:paddingTop="140dp"
+        android:textColor="#000000"
+        android:textSize="45dp"
+        />
+
+    <FrameLayout
+        android:id="@+id/fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/pill_identifier">
+
+        <Button
+            android:id="@+id/btn_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stateListAnimator="@null"
+            android:hint="약이름 또는 성분명 입력"
+            android:gravity="left|center"
+            android:textSize="20dp"
+            android:background="@drawable/border"
+            />
+
+        <ImageButton
+            android:id="@+id/btn_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:paddingRight="10dp"
+            android:background="#00000000"
+            android:src="@drawable/camera" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="40dp"
+        android:layout_below="@+id/fl"
+        android:orientation="horizontal">
+
+        <Button
+            android:text="Find a pharmacy \nin Seoul"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:id="@+id/find_button"
+            android:gravity="right|center"
+            android:drawableRight="@drawable/maps"
+            android:background="#00000000"/>
+
+
+    </LinearLayout>
+
+
+    <ImageButton
+        android:id="@+id/imgButton"
+        android:layout_width="match_parent"
+        android:layout_height="9mm"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/semicircle"
+        android:background="#00000000"
+        android:scaleType="centerInside"/>
+
+
+</RelativeLayout>

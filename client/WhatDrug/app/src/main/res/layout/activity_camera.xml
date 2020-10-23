@@ -1,0 +1,60 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/previewFrame"
+    >
+
+    <SurfaceView
+        android:id="@+id/camera_preview_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.example.WhatDrug.CameraView
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <Button
+        android:id="@+id/btnalbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom"
+        android:onClick="onClickTakeImage"
+        android:text="앨범"
+        android:layout_weight="1"
+        android:textSize="20dp" />
+
+    <ImageButton
+        android:id="@+id/btncamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="60dp"
+        android:onClick="onClickTakeImage"
+        android:src="@drawable/circular"
+        android:background="#00000000"
+        android:text="촬영"
+        android:layout_weight="1"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:id="@+id/cropimg"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <ImageButton
+        android:id="@+id/btn_Back"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back"
+        android:padding="10dp"/>
+
+</FrameLayout>
+

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffffff"
+    android:id="@+id/drug_info"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/drug_image"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_alignParentTop="true"
+        android:background="#00000000"/>
+
+    <TextView
+        android:id="@+id/drug_name"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@+id/drug_image"
+        android:text="Pill Info"
+        android:textSize="26dp"
+        android:background="#00000000"
+        android:textColor="#000000"
+        android:gravity="left"
+        />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/drug_name"
+        android:layout_above="@+id/btnPlus"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f0f0f0"/>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnPlus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffffff"
+        android:text="내 약으로 추가"/>
+
+</RelativeLayout>

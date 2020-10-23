@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_margin="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="centerInside"
+        android:layout_gravity="center"
+        android:src="@drawable/pill"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="약이름"
+            android:textColor="#505050"
+            android:id="@+id/textView"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="요일 : "
+                android:textColor="#505050"
+                android:layout_marginBottom="6dp"
+                android:textSize="15dp"/>
+
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/week"
+                android:text="알람시간"
+                android:textColor="#505050"
+                android:paddingLeft="4dp"
+                android:layout_marginBottom="6dp"
+                android:textSize="15dp"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_margin="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="centerInside"
+        android:layout_gravity="center"
+        android:id="@+id/imageView"
+        android:src="@drawable/pill"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="약이름"
+            android:textColor="#505050"
+            android:singleLine="true"
+            android:id="@+id/textView"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="앞 : "
+                android:textColor="#505050"
+                android:id="@+id/textView2"
+                android:layout_marginBottom="6dp"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="뒤 : "
+                android:textColor="#505050"
+                android:id="@+id/textView3"
+                android:layout_marginBottom="6dp"
+                android:paddingLeft="4dp"
+                android:textSize="15dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

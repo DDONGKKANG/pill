@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.WhatDrug">
+
+    <uses-permission android:name = "android.permission.INTERNET" />
+    <uses-permission android:name = "android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name = "android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name = "android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name = "android.permission.VIBRATE" />
+    <uses-permission android:name = "android.permission.CAMERA" />
+    <uses-permission android:name = "android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name = "android.permission.ACCESS_COARSE_LOCATION"/>
+
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"/>
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAqdL-flJJgEP_YXufuabOYlg8EkYT4hBM" />
+
+        <activity android:name="com.example.WhatDrug.LoadingActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name="com.example.WhatDrug.DrugInfomation"
+            android:theme="@style/StateBarTheme"/>
+        <activity android:name="com.example.WhatDrug.ResultListActivity"
+            android:theme="@style/StateBarTheme"/>
+        <activity android:name="com.example.WhatDrug.SearchActivity"
+            android:theme="@style/StateBarTheme"/>
+        <activity android:name="com.example.WhatDrug.CameraActivity"/>
+        <activity android:name="com.example.WhatDrug.Main2Activity"
+            android:theme="@style/StateBarTheme"/>
+        <activity android:name="com.example.WhatDrug.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".FindPharmacy"/>
+        <activity android:name=".PopupInfo"
+            android:theme="@style/popupTheme"
+            android:screenOrientation="portrait"/>
+
+        <!-- crop activity -->
+        <activity
+            android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+    </application>
+
+</manifest>
