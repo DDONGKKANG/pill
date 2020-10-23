@@ -13,7 +13,7 @@ class Ocr :
         self.LIMIT_BYTE = 1024*1024  # 1MB
         self.LIMIT_BOX = 40
 
-        self.appkey = 'a74042e884c98b944d02c7e31d105220'
+        self.appkey = 'null'
 
     def ocr_resize(self,image_path: str):
         """

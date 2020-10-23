@@ -9,8 +9,7 @@ import info_file_read
 import warnings
 
 warnings.filterwarnings("ignore")
-#HOST = "192.168.0.3"#카페"192.168.0.19"#집"192.168.0.3";
-HOST = '173.20.10.2'
+HOST = 'null'
 PORT = 5000
 ADDR = (HOST,PORT)
 
